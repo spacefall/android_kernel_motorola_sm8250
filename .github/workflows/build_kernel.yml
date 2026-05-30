@@ -1,0 +1,68 @@
+name: Build Android Kernel
+
+on:
+  push: 
+  workflow_dispatch:
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v6
+        with:
+          fetch-depth: 1
+          submodules: recursive
+
+      - name: Install build dependencies
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y \
+            bc \
+            bison \
+            build-essential \
+            ccache \
+            curl \
+            dwarves \
+            flex \
+            gawk \
+            git \
+            libelf-dev \
+            libssl-dev \
+            lz4 \
+            rsync \
+            unzip \
+            xz-utils \
+            cpio \
+            zip \
+            zstd
+
+      - name: Cache toolchain
+        id: toolchain-cache
+        uses: actions/cache@v5
+        with:
+          path: ~/toolchain
+          key: toolchain-cache-${{ env.AOSP_CLANG }}
+
+      - name: Get toolchain
+        if: steps.toolchain-cache.outputs.cache-hit != 'true'
+        run: |
+          mkdir -p ~/toolchain
+          wget https://android.googlesource.com/platform/prebuilts/clang/host/linux-x86/+archive/f8439f0628d799092dd07df440a6334cab28939c/clang-r563880c.tar.gz
+          tar xvf clang-r563880c.tar.gz -C ~/toolchain
+          rm clang-r563880c.tar.gz
+
+      - name: Build kernel
+        run: |
+          set -euo pipefail
+          chmod +x ./build.sh
+          ./build.sh
+
+      - name: Upload kernel artifacts
+        uses: actions/upload-artifact@v7
+        with:
+          archive: false
+          if-no-files-found: warn
+          path: |
+            AnyKernel/*.zip

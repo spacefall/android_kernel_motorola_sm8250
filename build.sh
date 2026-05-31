@@ -9,6 +9,12 @@ CONFIGS=(
     "vendor/ext_config/moto-lito.config"
     "vendor/ext_config/nairo-default.config"
     "vendor/debugfs.config"
+    "ksu.config"
+    "docker.config"
+    "droidspaces.config"
+    "droidspaces-additional.config"
+    "additional.config"
+    "lto.config"
 )
 ADDITIONAL_BUILD_FLAGS=(
     "DTC_FLAGS=-f"

@@ -4,6 +4,10 @@ on:
   push: 
   workflow_dispatch:
 
+env:
+  CLANG_VERSION: clang-r563880c
+  CLANG_URL: "https://android.googlesource.com/platform/prebuilts/clang/host/linux-x86/+archive/f8439f0628d799092dd07df440a6334cab28939c/clang-r563880c.tar.gz"
+
 jobs:
   build:
     runs-on: ubuntu-latest
@@ -43,15 +47,15 @@ jobs:
         uses: actions/cache@v5
         with:
           path: ~/toolchain
-          key: toolchain-cache-${{ env.AOSP_CLANG }}
+          key: toolchain-cache-${{ env.CLANG_VERSION }}
 
       - name: Get toolchain
         if: steps.toolchain-cache.outputs.cache-hit != 'true'
         run: |
           mkdir -p ~/toolchain
-          wget https://android.googlesource.com/platform/prebuilts/clang/host/linux-x86/+archive/f8439f0628d799092dd07df440a6334cab28939c/clang-r563880c.tar.gz
-          tar xvf clang-r563880c.tar.gz -C ~/toolchain
-          rm clang-r563880c.tar.gz
+          wget $CLANG_URL
+          tar xvf $CLANG_VERSION.tar.gz -C ~/toolchain
+          rm $CLANG_VERSION.tar.gz
 
       - name: Build kernel
         run: |

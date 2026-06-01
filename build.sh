@@ -8,20 +8,8 @@ CONFIGS=(
     "vendor/lito-perf_defconfig"
     "vendor/ext_config/moto-lito.config"
     "vendor/ext_config/nairo-default.config"
-    "vendor/debugfs.config"
-    "ksu.config"
-    "docker.config"
-    "droidspaces.config"
-    "droidspaces-additional.config"
-    "additional.config"
-    "lto.config"
 )
 ADDITIONAL_BUILD_FLAGS=(
-    "DTC_FLAGS=-f"
-    "LLVM_IAS=1"
-    "CLANG_TRIPLE=aarch64-linux-gnu-"
-    "CROSS_COMPILE=aarch64-linux-android-"
-    "CROSS_COMPILE_COMPAT=arm-linux-androidkernel-"
     "Image.gz-dtb"
 )
 

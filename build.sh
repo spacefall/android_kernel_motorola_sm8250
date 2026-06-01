@@ -10,6 +10,7 @@ CONFIGS=(
     "vendor/ext_config/nairo-default.config"
 )
 ADDITIONAL_BUILD_FLAGS=(
+    "DTC_FLAGS=-f"
     "Image.gz-dtb"
 )
 

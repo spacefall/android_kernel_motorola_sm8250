@@ -11,8 +11,8 @@ CONFIGS=(
     "vendor/debugfs.config"
     "ksu.config"
     "docker.config"
-    "droidspaces.config"
-    "droidspaces-additional.config"
+    #"droidspaces.config"
+    #"droidspaces-additional.config"
     "additional.config"
     "lto.config"
 )

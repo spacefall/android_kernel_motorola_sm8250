@@ -57,6 +57,9 @@ jobs:
           tar xvf $CLANG_VERSION.tar.gz -C ~/toolchain
           rm $CLANG_VERSION.tar.gz
 
+      - name: Get ccache
+        uses: hendrikmuhs/ccache-action@v1.2
+
       - name: Build kernel
         run: |
           set -euo pipefail

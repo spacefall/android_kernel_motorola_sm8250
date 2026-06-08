@@ -48,9 +48,9 @@ build_kernel() {
 boot_repack() {
     cd pack
     rm boot.img -f
+    gzip -d -k og-boot.img.gz
     mkdir boot
     cd boot
-    gzip -d -k og-boot.img.gz
     ../magiskboot unpack ../og-boot.img
     cp ../../out/arch/arm64/boot/Image kernel
     ../magiskboot repack ../og-boot.img ../boot.img
@@ -100,6 +100,16 @@ fi
 
 if [[ "$1" == "--repack" ]]; then
     boot_repack
+    modules_repack
+    exit 0
+fi
+
+if [[ "$1" == "--boot" ]]; then
+    boot_repack
+    exit 0
+fi
+
+if [[ "$1" == "--modules" ]]; then
     modules_repack
     exit 0
 fi

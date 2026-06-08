@@ -1,0 +1,72 @@
+name: Build Android Kernel
+
+on:
+  push: 
+  workflow_dispatch:
+
+env:
+  CLANG_VERSION: clang-r563880c
+  CLANG_URL: "https://android.googlesource.com/platform/prebuilts/clang/host/linux-x86/+archive/f8439f0628d799092dd07df440a6334cab28939c/clang-r563880c.tar.gz"
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v6
+        with:
+          fetch-depth: 1
+          submodules: recursive
+
+      - name: Install build dependencies
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y \
+            bc \
+            bison \
+            build-essential \
+            ccache \
+            curl \
+            dwarves \
+            flex \
+            gawk \
+            git \
+            libelf-dev \
+            libssl-dev \
+            lz4 \
+            rsync \
+            unzip \
+            xz-utils \
+            cpio \
+            zip \
+            zstd
+
+      - name: Cache toolchain
+        id: toolchain-cache
+        uses: actions/cache@v5
+        with:
+          path: ~/toolchain
+          key: toolchain-cache-${{ env.CLANG_VERSION }}
+
+      - name: Get toolchain
+        if: steps.toolchain-cache.outputs.cache-hit != 'true'
+        run: |
+          mkdir -p ~/toolchain
+          wget $CLANG_URL
+          tar xvf $CLANG_VERSION.tar.gz -C ~/toolchain
+          rm $CLANG_VERSION.tar.gz
+
+      - name: Build kernel
+        run: |
+          set -euo pipefail
+          chmod +x ./build.sh
+          ./build.sh
+
+      - name: Upload kernel artifacts
+        uses: actions/upload-artifact@v7
+        with:
+          if-no-files-found: warn
+          path: |
+            pack/boot.img
+            pack/vendor_dlkm.img

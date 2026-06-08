@@ -9,6 +9,7 @@ CONFIGS=(
     "vendor/ext_config/nairo-default.config"
     "vendor/debugfs.config"
     "vendor/ext_config/debug-lito-nairo.config"
+    "nodebug.config"
 )
 ADDITIONAL_BUILD_FLAGS=(
     "Image"

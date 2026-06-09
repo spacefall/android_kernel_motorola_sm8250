@@ -48,7 +48,7 @@ build_kernel() {
 
 boot_repack() {
     cd pack
-    rm boot.img -f
+    rm boot.img og-boot.img -f
     gzip -d -k og-boot.img.gz
     mkdir boot
     cd boot

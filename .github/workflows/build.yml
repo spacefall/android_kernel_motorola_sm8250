@@ -19,28 +19,10 @@ jobs:
           fetch-depth: 1
           submodules: recursive
 
-      - name: Install build dependencies
-        run: |
-          sudo apt-get update
-          sudo apt-get install -y \
-            bc \
-            bison \
-            build-essential \
-            ccache \
-            curl \
-            dwarves \
-            flex \
-            gawk \
-            git \
-            libelf-dev \
-            libssl-dev \
-            lz4 \
-            rsync \
-            unzip \
-            xz-utils \
-            cpio \
-            zip \
-            zstd
+      # - name: Install build dependencies
+      #   run: |
+      #     sudo apt-get update
+      #     sudo apt-get install -y flex bison bc ccache libssl-dev cpio
 
       - name: Cache toolchain
         id: toolchain-cache
@@ -58,7 +40,7 @@ jobs:
           rm $CLANG_VERSION.tar.gz
 
       - name: Get ccache
-        uses: hendrikmuhs/ccache-action@v1.2
+        uses: hendrikmuhs/ccache-action@v1.2.23
 
       - name: Build kernel
         run: |

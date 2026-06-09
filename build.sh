@@ -10,6 +10,9 @@ CONFIGS=(
     "vendor/debugfs.config"
     "vendor/ext_config/debug-lito-nairo.config"
     "nodebug.config"
+    "docker.config"
+    "droidspaces.config"
+    "additional.config"
 )
 ADDITIONAL_BUILD_FLAGS=(
     "Image"

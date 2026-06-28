@@ -14,15 +14,13 @@ jobs:
 
     steps:
       - name: Checkout repository
-        uses: actions/checkout@v6
+        uses: actions/checkout@v7
         with:
           fetch-depth: 1
           submodules: recursive
 
-      # - name: Install build dependencies
-      #   run: |
-      #     sudo apt-get update
-      #     sudo apt-get install -y flex bison bc ccache libssl-dev cpio
+      - name: Update submodules
+        run: git submodule update --remote
 
       - name: Cache toolchain
         id: toolchain-cache

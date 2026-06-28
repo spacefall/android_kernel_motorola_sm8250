@@ -143,6 +143,5 @@ Android.bp
 # kernel build
 out/
 pack/*.img
-!pack/*.gz
 
 !.github/

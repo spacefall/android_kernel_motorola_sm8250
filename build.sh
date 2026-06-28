@@ -29,10 +29,7 @@ perform_clean() {
 }
 
 build_kernel() {
-    local image_path="$OUT/arch/arm64/boot/Image"
-
     echo "🔧 Starting build for: $DEVICE"
-
     make O="$OUT" LLVM=1 "${CONFIGS[@]}"
 
     local build_start
@@ -42,7 +39,7 @@ build_kernel() {
     build_end=$(date +%s)
     local duration=$((build_end - build_start))
 
-    if [ ! -f "$image_path" ]; then
+    if [ ! -f "$OUT/arch/arm64/boot/Image" ]; then
         echo "❌ Build failed after $(printf "%02d:%02d" $((duration / 60)) $((duration % 60)))"
         exit 1
     fi
@@ -52,7 +49,7 @@ build_kernel() {
 boot_repack() {
     cd pack
     rm boot.img og-boot.img -f
-    gzip -d -k og-boot.img.gz
+    zstd -d og-boot.img.zst
     mkdir boot
     cd boot
     ../magiskboot unpack ../og-boot.img
@@ -70,7 +67,7 @@ modules_repack() {
     rm vendor_dlkm.img -f
     mkdir modules
     mkdir dlkm
-    gzip -d -k og-vendor_dlkm.img.gz -c > vendor_dlkm.img 
+    zstd -d og-vendor_dlkm.img.zst -o vendor_dlkm.img 
     python3 fix_modules.py
     sudo mount vendor_dlkm.img dlkm
     sudo rm dlkm/lib/modules/*.ko -rf
